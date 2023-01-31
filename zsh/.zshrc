@@ -140,3 +140,6 @@ source_if_exists /usr/share/doc/fzf/examples/completion.zsh
 
 source_if_exists ~/.p10k.zsh
 source_if_exists ~/.local.zsh
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
