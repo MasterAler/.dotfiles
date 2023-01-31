@@ -2,5 +2,5 @@
 
 ## Quick start
 ```
-git clone --recurse-submodules https://github.com/cdump/.dotfiles ~/.dotfiles && ~/.dotfiles/install.sh
+git clone --recurse-submodules https://github.com/MasterAler/.dotfiles.git ~/.dotfiles && ~/.dotfiles/install.sh
 ```

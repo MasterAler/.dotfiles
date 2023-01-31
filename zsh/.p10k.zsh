@@ -48,7 +48,7 @@
 
   ##################################[ dir: current directory ]##################################
   typeset -g POWERLEVEL9K_DIR_DEFAULT_BACKGROUND='237'
-  typeset -g POWERLEVEL9K_DIR_DEFAULT_FOREGROUND='blue'
+  typeset -g POWERLEVEL9K_DIR_DEFAULT_FOREGROUND='250'
   typeset -g POWERLEVEL9K_DIR_HOME_BACKGROUND='237'
   typeset -g POWERLEVEL9K_DIR_HOME_FOREGROUND='blue'
   typeset -g POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND='237'
@@ -58,7 +58,7 @@
   # typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=24
   typeset -g POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
   typeset -g POWERLEVEL9K_DIR_SHOW_WRITABLE=v3 # special styling for non-writable and non-existent directories
-  typeset -g POWERLEVEL9K_LOCK_ICON='⭐'
+  typeset -g POWERLEVEL9K_LOCK_ICON='X'
   typeset -g POWERLEVEL9K_DIR_CLASSES=('*' DEFAULT '')
 
   #####################################[ vcs: git status ]######################################
@@ -83,7 +83,7 @@
 
   ##################################[ context: user@hostname ]##################################
   typeset -g POWERLEVEL9K_CONTEXT_BACKGROUND='black'
-  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=250
+  typeset -g POWERLEVEL9K_CONTEXT_FOREGROUND=040
   typeset -g POWERLEVEL9K_CONTEXT_ROOT_FOREGROUND=1
   typeset -g POWERLEVEL9K_CONTEXT_ROOT_BACKGROUND=88
   typeset -g POWERLEVEL9K_CONTEXT_{REMOTE,REMOTE_SUDO}_FOREGROUND=180
