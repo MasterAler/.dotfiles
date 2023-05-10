@@ -17,7 +17,7 @@ require('colorscheme')
 
 --[[ general options ]]
 vim.opt.number = true -- show line numbers
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false
 vim.opt.showmode = false -- already have mode in lualine plugin
 vim.opt.confirm = true -- raise a dialogue asking if you wish to save changed files
 vim.opt.cursorline = true -- higlight current line
@@ -106,3 +106,5 @@ vim.api.nvim_create_autocmd('Filetype', {
     pattern = { 'html', 'vue',  'css', 'scss', 'javascript', 'typescript' },
     command = 'setlocal shiftwidth=2 tabstop=2'
 })
+
+vim.keymap.set('n', '<leader>b', '<cmd>MarksListAll<cr>')

@@ -18,7 +18,7 @@
 
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
       context                 # user@hostname
-      ssh
+      # ssh
       dir                     # current directory
       root_indicator
       midnight_commander      # midnight commander shell (https://midnight-commander.org/)

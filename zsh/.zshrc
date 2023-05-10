@@ -139,6 +139,9 @@ source_if_exists /usr/share/fzf/key-bindings.zsh
 # ubuntu
 source_if_exists /usr/share/doc/fzf/examples/key-bindings.zsh
 source_if_exists /usr/share/doc/fzf/examples/completion.zsh
+source_if_exists /home/akasyan/.gvm/scripts/gvm
 
 source_if_exists ~/.p10k.zsh
 source_if_exists ~/.local.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
