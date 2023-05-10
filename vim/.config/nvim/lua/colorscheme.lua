@@ -1,4 +1,3 @@
-vim.opt.termguicolors = true
 vim.cmd [[
     let g:sonokai_disable_italic_comment=1
     let g:sonokai_diagnostic_virtual_text='colored'
@@ -11,7 +10,7 @@ vim.cmd [[
     hi NvimTreeWinSeparator guifg=#222327 guibg=#222327
     hi NvimTreeCursorLine guibg=#383838
 
-    hi IndentBlanklineChar guifg=#31353d
+    hi IndentBlanklineChar guifg=#282c34
 
     hi BufferLineBufferSelected guifg=#e2e2e3 guibg=#1e222a gui=bold
 

@@ -1,79 +1,81 @@
-local fn = vim.fn
-local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-local packer_bootstrap = false
-if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
-    vim.o.runtimepath = install_path .. ',' .. vim.o.runtimepath
-    packer_bootstrap = true
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
+vim.opt.rtp:prepend(lazypath)
 
-return require('packer').startup({ function(use)
-    use { -- package manager
-        'wbthomason/packer.nvim'
-    }
-
-    use {
+return require('lazy').setup({
+    {
         'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+        keys = {
+            { '<leader>l', function() require('lsp_lines').toggle() end, desc = 'Toggle lsp_lines' },
+        },
         config = function()
             require('lsp_lines').setup()
             vim.diagnostic.config({ virtual_lines = false })
         end,
-    }
+    },
 
-    use { -- colorscheme
+    { -- colorscheme
         'sainnhe/sonokai'
-    }
+    },
 
-    use { -- Create Color Code
-        'uga-rosa/ccc.nvim'
-    }
+    { -- Create Color Code
+        'uga-rosa/ccc.nvim',
+        cmd = 'CccPick',
+    },
 
-    use { -- fastest Neovim colorizer
+    { -- fastest Neovim colorizer
         'norcalli/nvim-colorizer.lua',
         config = function() require 'colorizer'.setup {
                 'css';
                 'javascript';
             }
         end
-    }
+    },
 
-    use {
+    {
         'stevearc/dressing.nvim',
         config = function() require('dressing').setup {
+                input = {
+                    win_options = {
+                        winblend = 0, -- disable transparency
+                    },
+                },
                 select = {
-                    get_config = function(opts)
-                        if opts.kind == 'codeaction' then
-                            return {
-                                backend = 'telescope',
-                                telescope = require('telescope.themes').get_cursor(),
-                            }
-                        end
-                    end
+                    telescope = require('telescope.themes').get_cursor(),
                 }
             }
         end
-    }
+    },
 
-    use { -- smart and powerful comment plugin
+    { -- smart and powerful comment plugin
         'numToStr/Comment.nvim',
         config = function() require('Comment').setup {} end,
-    }
+    },
 
-    use { -- alignment plugin
+    { -- alignment plugin
         'junegunn/vim-easy-align',
-        setup = function()
+        init = function()
             vim.g.easy_align_delimiters = { ['\\'] = { pattern = '\\\\' } }
         end,
-    }
+    },
 
-    use { -- motions on speed
+    { -- motions on speed
         'phaazon/hop.nvim',
         branch = 'v1',
         config = function() require('hop').setup {
                 keys = 'etovxqpdygfblzhckisuran'
             }
         end
-    }
+    },
 
     -- use({
     --     'folke/noice.nvim',
@@ -108,16 +110,17 @@ return require('packer').startup({ function(use)
     --     }
     -- })
 
-    use { -- Extended Vim syntax highlighting for C and C++ (C++11/14/17/20)
+    { -- Extended Vim syntax highlighting for C and C++ (C++11/14/17/20)
         'bfrg/vim-cpp-modern'
-    }
+    },
 
-    use { -- highlight, edit, and navigate code using a fast incremental parsing library
+    { -- highlight, edit, and navigate code using a fast incremental parsing library
         'nvim-treesitter/nvim-treesitter',
-        requires = {
+        -- version = nil,
+        dependencies = {
             'p00f/nvim-ts-rainbow',
         },
-        run = ':TSUpdate',
+        -- build = ':TSUpdate',
         config = function() require('nvim-treesitter.configs').setup {
                 rainbow = {
                     enable = true,
@@ -134,25 +137,25 @@ return require('packer').startup({ function(use)
                 }
             }
         end
-    }
+    },
 
-    use { -- a Git wrapper so awesome, it should be illegal
+    { -- a Git wrapper so awesome, it should be illegal
         'tpope/vim-fugitive'
-    }
+    },
 
-    use { -- git signs in signcolumn
+    { -- git signs in signcolumn
         'lewis6991/gitsigns.nvim',
         config = function() require('gitsigns').setup {
                 attach_to_untracked = false,
             }
         end
-    }
+    },
 
-    use { -- Find, Filter, Preview, Pick. All lua, all the time
+    { -- Find, Filter, Preview, Pick. All lua, all the time
         'nvim-telescope/telescope.nvim',
-        requires = {
+        dependencies = {
             { 'nvim-lua/plenary.nvim' },
-            { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
         },
         config = function()
             require('telescope').setup {
@@ -169,7 +172,7 @@ return require('packer').startup({ function(use)
             }
             require('telescope').load_extension('fzf')
         end
-    }
+    },
 
     -- use {
     --     'fatih/vim-go',
@@ -177,19 +180,19 @@ return require('packer').startup({ function(use)
     --     ft = {'go'},
     -- }
 
-    use { -- markdown preview plugin
+    { -- markdown preview plugin
         'iamcco/markdown-preview.nvim',
-        run = function() vim.fn['mkdp#util#install']() end,
+        build = function() vim.fn['mkdp#util#install']() end,
         ft = { 'markdown' },
-        setup = function()
+        init = function()
             vim.g.mkdp_open_to_the_world = 1
             vim.g.mkdp_echo_preview_url = 1
         end,
-    }
+    },
 
-    use { -- highlight trailing whitespaces
+    { -- highlight trailing whitespaces
         'ntpeters/vim-better-whitespace',
-        setup = function()
+        init = function()
             vim.g.better_whitespace_enabled = 1
             vim.g.show_spaces_that_precede_tabs = 1
             vim.g.strip_whitespace_confirm = 0
@@ -197,12 +200,12 @@ return require('packer').startup({ function(use)
             vim.g.strip_whitespace_on_save = 1
             vim.g.better_whitespace_guicolor = '#d78787'
         end,
-    }
+    },
 
-    use { -- A snazzy bufferline for Neovim
+    { -- A snazzy bufferline for Neovim
         'akinsho/bufferline.nvim',
-        tag = '*',
-        requires = { 'nvim-tree/nvim-web-devicons' },
+        version = '*',
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
         config = function() require('bufferline').setup {
                 options = {
                     -- offsets = { { filetype = 'neo-tree', padding = 1 } },
@@ -218,11 +221,11 @@ return require('packer').startup({ function(use)
                 }
             }
         end
-    }
+    },
 
-    use { -- A blazing fast and easy to configure neovim statusline plugin written in pure lua
+    { -- A blazing fast and easy to configure neovim statusline plugin written in pure lua
         'nvim-lualine/lualine.nvim',
-        requires = { 'nvim-tree/nvim-web-devicons' },
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
         config = function() require('lualine').setup {
                 options = {
                     globalstatus = true,
@@ -234,9 +237,9 @@ return require('packer').startup({ function(use)
                 }
             }
         end
-    }
+    },
 
-    use {
+    {
         'lukas-reineke/indent-blankline.nvim',
         config = function()
             require("indent_blankline").setup {
@@ -245,34 +248,49 @@ return require('packer').startup({ function(use)
                 filetype_exclude = { 'help', 'markdown', 'text' },
             }
         end
-    }
+    },
 
-    use {
+    {
         'nvim-tree/nvim-tree.lua',
-        requires = { 'nvim-tree/nvim-web-devicons' },
+        dependencies = { 'nvim-tree/nvim-web-devicons' },
         tag = 'nightly', -- optional, updated every week. (see issue #1193)
         config = function()
             require('nvim-tree').setup({
                 sort_by = 'case_sensitive',
+                -- sync_root_with_cwd = true,
                 view = {
-                    width = 25,
+                    width = {
+                        min = 25,
+                        max = 60,
+                    },
                     -- signcolumn = 'no',
                     mappings = {
                         list = {
                             { key = 'u', action = 'dir_up' },
+                            { key = 'r', action = 'refresh' },
+                            { key = 'R', action = 'rename' },
+                            { key = '.', action = '. descr', action_cb = function()
+                                local api = require('nvim-tree.api')
+                                local node = api.tree.get_node_under_cursor()
+                                local cnode = node.type == 'directory' and node.parent or
+                                    (node.parent.parent or node.parent)
+                                api.tree.change_root_to_node(cnode)
+                                api.tree.find_file(node.absolute_path)
+                                print('root set to ' .. cnode.absolute_path)
+                            end },
                             { key = 'cd', action = 'cd descr', action_cb = function()
                                 local lib = require('nvim-tree.lib')
                                 local node = lib.get_node_at_cursor()
-                                if node.type == 'directory' then
-                                    vim.cmd('cd ' .. node.absolute_path)
-                                    print('directory changed to ' .. node.absolute_path)
-                                end
+                                local path = node.type == 'directory' and node.absolute_path or node.parent.absolute_path
+                                vim.cmd('cd ' .. path)
+                                print('directory changed to ' .. path)
                             end },
                         },
                     },
                 },
                 renderer = {
                     group_empty = true,
+                    indent_width = 1,
                     icons = {
                         show = {
                             folder_arrow = false,
@@ -298,7 +316,7 @@ return require('packer').startup({ function(use)
                 end
             })
         end
-    }
+    },
 
     -- use {
     --     'nvim-neo-tree/neo-tree.nvim',
@@ -371,7 +389,7 @@ return require('packer').startup({ function(use)
     --     end
     -- }
 
-    use {
+    {
         'jose-elias-alvarez/null-ls.nvim',
         config = function()
             local null_ls = require('null-ls')
@@ -383,46 +401,53 @@ return require('packer').startup({ function(use)
                     null_ls.builtins.code_actions.eslint_d,
                     null_ls.builtins.formatting.eslint_d,
 
+                    null_ls.builtins.formatting.black.with {
+                        only_local = '.venv/bin',
+                    },
+                    null_ls.builtins.diagnostics.mypy.with {
+                        only_local = '.venv/bin',
+                    },
                     null_ls.builtins.diagnostics.flake8.with {
                         only_local = '.venv/bin',
                     },
                 },
             }
         end
-    }
+    },
 
-    use { -- easily install and manage LSP servers, DAP servers, linters, and formatters
+    { -- easily install and manage LSP servers, DAP servers, linters, and formatters
         'williamboman/mason.nvim',
         config = function() require('mason').setup {} end
-    }
-    use {
+    },
+    {
         'williamboman/mason-lspconfig.nvim'
-    }
-    use {
+    },
+    {
         'neovim/nvim-lspconfig'
-    }
+    },
 
-    use { -- a tree like view for symbols using LSP
+    { -- a tree like view for symbols using LSP
         'simrat39/symbols-outline.nvim',
         config = function() require('symbols-outline').setup {
                 highlight_hovered_item = false,
             }
         end
-    }
+    },
 
-    use { -- snippets
+    { -- snippets
         'L3MON4D3/LuaSnip',
-        requires = {
+        dependencies = {
             'rafamadriz/friendly-snippets',
         },
+        build = 'make install_jsregexp',
         config = function()
             require('luasnip.loaders.from_vscode').lazy_load()
         end
-    }
+    },
 
-    use { -- autocompletion
+    { -- autocompletion
         'hrsh7th/nvim-cmp',
-        requires = {
+        dependencies = {
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-nvim-lsp-signature-help',
@@ -453,10 +478,14 @@ return require('packer').startup({ function(use)
             }
 
             cmp.setup {
+                preselect = cmp.PreselectMode.None,
                 window = {
                     completion = cmp.config.window.bordered(border_opts),
                     documentation = cmp.config.window.bordered(border_opts),
                 },
+                -- completion = {
+                --     completeopt = "menu,menuone,noinsert,noselect,preview",
+                -- },
                 snippet = {
                     expand = function(args)
                         require('luasnip').lsp_expand(args.body)
@@ -490,9 +519,9 @@ return require('packer').startup({ function(use)
                 },
             }
         end
-    }
+    },
 
-    use {
+    {
         "chentoast/marks.nvim",
         -- event = "BufReadPre",
         config = function()
@@ -531,13 +560,10 @@ return require('packer').startup({ function(use)
                 mappings = {}
             }
         end,
-    }
+    },
 
-    if packer_bootstrap then
-        require('packer').sync()
-    end
-end, config = {
-    display = {
-        open_fn = require('packer.util').float,
-    }
-} })
+}, {
+    ui = {
+        border = 'rounded',
+    },
+})
