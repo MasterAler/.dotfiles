@@ -242,10 +242,25 @@ return require('lazy').setup({
     {
         'lukas-reineke/indent-blankline.nvim',
         config = function()
-            require("indent_blankline").setup {
-                -- enabled = false,
-                char = '▏',
-                filetype_exclude = { 'help', 'markdown', 'text' },
+            local highlight = {
+                -- "CursorColumn",
+                "Whitespace",
+            }
+            require("ibl").setup {
+                enabled = true,
+                indent = { highlight = highlight, char = '▏' },
+                whitespace = {
+                    highlight = highlight,
+                    remove_blankline_trail = false,
+                },
+                scope = { enabled = false },
+                exclude = {
+                    filetypes = {
+                        'help', 'markdown', 'text',
+                        'lspinfo', 'gitcommit', 'man',
+                        'TelescopePrompt', 'TelescopeResults', 'packer'
+                    },
+                },
             }
         end
     },
@@ -317,77 +332,6 @@ return require('lazy').setup({
             })
         end
     },
-
-    -- use {
-    --     'nvim-neo-tree/neo-tree.nvim',
-    --     branch = 'v2.x',
-    --     requires = {
-    --         'nvim-lua/plenary.nvim',
-    --         'nvim-tree/nvim-web-devicons', -- not strictly required, but recommended
-    --         'MunifTanjim/nui.nvim',
-    --     },
-    --     config = function()
-    --         vim.g.neo_tree_remove_legacy_commands = true
-    --         require('neo-tree').setup({
-    --             close_if_last_window = true,
-    --             enable_diagnostics = false,
-    --             enable_git_status = false,
-    --             use_default_mappings = false,
-    --             open_files_in_last_windows = false, -- false = open files in top left window
-    --             window = {
-    --                 width = 30,
-    --                 mappings = {
-    --                     ['<cr>'] = 'open',
-    --                     ['r'] = 'refresh',
-    --                     ['a'] = {
-    --                         'add',
-    --                         config = { show_path = 'absolute' } -- 'none', 'relative', 'absolute'
-    --                     },
-    --                     ['d'] = 'delete',
-    --                     ['R'] = 'rename',
-    --                     ['y'] = 'copy_to_clipboard',
-    --                     ['x'] = 'cut_to_clipboard',
-    --                     ['p'] = 'paste_from_clipboard',
-    --                     ['q'] = 'close_window',
-    --                     ['?'] = 'show_help',
-    --                     ['u'] = function(state)
-    --                         local node = state.tree:get_node()
-    --                         if node.level == 0 then
-    --                             require('neo-tree.sources.filesystem.commands').navigate_up(state)
-    --                         else
-    --                             require('neo-tree.sources.manager').focus('filesystem', node:get_parent_id(), nil)
-    --                         end
-    --                     end,
-    --                     ['.'] = 'set_root',
-    --                     ['cd'] = function(state)
-    --                         local node = state.tree:get_node()
-    --                         if node.type == 'directory' then
-    --                             vim.cmd('cd ' .. node.path)
-    --                             print('working directory changed to ' .. node.path)
-    --                         end
-    --                     end,
-    --                 },
-    --             },
-    --             filesystem = {
-    --                 window = {
-    --                     mappings = {
-    --                         ['H'] = 'toggle_hidden',
-    --                         ['f'] = 'filter_on_submit',
-    --                         ['<C-x>'] = 'clear_filter',
-    --                     }
-    --                 },
-    --                 bind_to_cwd = false, -- true creates a 2-way binding between vim's cwd and neo-tree's root
-    --                 filtered_items = {
-    --                     visible = false, -- when true, they will just be displayed differently than normal items
-    --                     force_visible_in_empty_folder = true, -- when true, hidden files will be shown if the root folder is otherwise empty
-    --                     show_hidden_count = true, -- when true, the number of hidden items in each folder will be shown as the last entry
-    --                     hide_dotfiles = true,
-    --                     hide_gitignored = false,
-    --                 },
-    --             },
-    --         })
-    --     end
-    -- }
 
     {
         'jose-elias-alvarez/null-ls.nvim',

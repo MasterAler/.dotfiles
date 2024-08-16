@@ -145,3 +145,5 @@ source_if_exists ~/.p10k.zsh
 source_if_exists ~/.local.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+[[ -s "/home/aler/.gvm/scripts/gvm" ]] && source "/home/aler/.gvm/scripts/gvm"

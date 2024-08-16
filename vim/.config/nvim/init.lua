@@ -47,7 +47,6 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 --[[ Command mode ]]
 require('command_mode')
-
 --[[ Indentation ]]
 vim.opt.expandtab = true -- Change tabs to spaces
 vim.opt.shiftwidth = 4 -- Number of spaces to use for each step of (auto)indent.
@@ -94,7 +93,8 @@ vim.keymap.set('n', '<C-\\>', function() require('nvim-tree.api').tree.open({fin
 
 vim.keymap.set('n', '<leader>t', '<cmd>SymbolsOutline<cr>')
 
-vim.keymap.set('n', '<leader>i', '<cmd>IndentBlanklineToggle<cr>')
+-- vim.keymap.set('n', '<leader>i', '<cmd>IndentBlanklineToggle<cr>')
+vim.keymap.set('n', '<leader>i', '<cmd>IBLToggle<cr>')
 
 
 vim.keymap.set('n', '<leader>x', function() require('telescope.builtin').diagnostics({ bufnr = 0 }) end)
