@@ -112,3 +112,15 @@ vim.api.nvim_create_autocmd('Filetype', {
 })
 
 vim.keymap.set('n', '<leader>b', '<cmd>MarksListAll<cr>')
+
+function FormatFunction()
+  vim.lsp.buf.format({
+    async = true,
+    range = {
+      ["start"] = vim.api.nvim_buf_get_mark(0, "<"),
+      ["end"] = vim.api.nvim_buf_get_mark(0, ">"),
+    }
+  })
+end
+
+vim.api.nvim_set_keymap("v", "<leader>ff", "<Esc><cmd>lua FormatFunction()<CR>", {noremap = true})
