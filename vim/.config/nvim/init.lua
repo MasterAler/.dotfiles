@@ -49,8 +49,8 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 require('command_mode')
 --[[ Indentation ]]
 vim.opt.expandtab = true -- Change tabs to spaces
-vim.opt.shiftwidth = 4 -- Number of spaces to use for each step of (auto)indent.
-vim.opt.tabstop = 4 -- Number of spaces that a <Tab> in the file counts for.
+vim.opt.shiftwidth = 2 -- Number of spaces to use for each step of (auto)indent.
+vim.opt.tabstop = 2 -- Number of spaces that a <Tab> in the file counts for.
 
 --[[ Search ]]
 vim.opt.ignorecase = true -- Ignore case when searching...
@@ -74,6 +74,7 @@ vim.keymap.set('n', '<', '2<C-w><')
 for i = 1, 9 do
     vim.keymap.set('n', '<M-' .. i .. '>', function() require('bufferline').go_to_buffer(i, true) end)
 end
+vim.keymap.set('n', '<leader>c', ':NvimTreeFindFile<CR>', { desc = 'Find current file in NvimTree' })
 vim.keymap.set('n', '<leader>j', '<cmd>HopLineStart<cr>')
 vim.keymap.set('n', 's', '<cmd>HopWord<cr>')
 vim.keymap.set('v', '<Enter>', '<Plug>(EasyAlign)')
@@ -93,7 +94,6 @@ vim.keymap.set('n', '<C-\\>', function() require('nvim-tree.api').tree.open({fin
 
 vim.keymap.set('n', '<leader>t', '<cmd>SymbolsOutline<cr>')
 
--- vim.keymap.set('n', '<leader>i', '<cmd>IndentBlanklineToggle<cr>')
 vim.keymap.set('n', '<leader>i', '<cmd>IBLToggle<cr>')
 
 

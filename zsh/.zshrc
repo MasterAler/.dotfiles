@@ -131,6 +131,8 @@ source_if_exists() {
 
 alias hex_escaped='od -An -tx1 | sed -E "s/([0-9a-f]{2})/\\\x\1/g"|tr -d " \n"'
 alias hex_0x='od -An -tx1 | sed -E "s/([0-9a-f]{2})/0x\1,/g"|tr -d " \n"'
+alias pbcopy=’xclip -selection clipboard’
+alias pbpaste=’xclip -selection clipboard -o’
 
 # arch-linux
 source_if_exists /usr/share/fzf/completion.zsh
@@ -139,7 +141,7 @@ source_if_exists /usr/share/fzf/key-bindings.zsh
 # ubuntu
 source_if_exists /usr/share/doc/fzf/examples/key-bindings.zsh
 source_if_exists /usr/share/doc/fzf/examples/completion.zsh
-source_if_exists /home/akasyan/.gvm/scripts/gvm
+source_if_exists ~/.gvm/scripts/gvm
 
 source_if_exists ~/.p10k.zsh
 source_if_exists ~/.local.zsh
@@ -147,3 +149,36 @@ source_if_exists ~/.local.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 [[ -s "/home/aler/.gvm/scripts/gvm" ]] && source "/home/aler/.gvm/scripts/gvm"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+proxy_on() {
+  export HTTP_PROXY="http://127.0.0.1:2080"
+  export HTTPS_PROXY="http://127.0.0.1:2080"
+  export ALL_PROXY="socks5h://127.0.0.1:2080"
+
+  export http_proxy="$HTTP_PROXY"
+  export https_proxy="$HTTPS_PROXY"
+  export all_proxy="$ALL_PROXY"
+
+  # export NO_PROXY="localhost,127.0.0.1,::1"
+  # gm-gitlab.kraftway.ru listed by hostname: git-lfs (Go) matches no_proxy on the
+  # URL host, not the resolved IP, so the 172.16.0.0/12 CIDR alone doesn't bypass it
+  export NO_PROXY="localhost,127.0.0.1,::1,*.local,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,gm-gitlab.kraftway.ru"
+  export no_proxy="$NO_PROXY"
+
+  echo "Proxy enabled"
+}
+
+proxy_off() {
+  unset HTTP_PROXY HTTPS_PROXY ALL_PROXY NO_PROXY
+  unset http_proxy https_proxy all_proxy no_proxy
+
+  echo "Proxy disabled"
+}
+
+my_ip() {
+  curl -w "\n" ipinfo.io/ip
+}
